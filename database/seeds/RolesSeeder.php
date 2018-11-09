@@ -13,21 +13,27 @@ class RolesSeeder extends Seeder
      */
     public function run()
     {
-        //Create User (Default) role
+        //Create Administrator role
         $user = Role::create([
             'code'=> 'ADM',
             'name' => 'Administrator'
+        ]);
+        // Create Moderator role
+        $user = Role::create([
+            'code'=> 'MOD',
+            'name' => 'Moderator'
         ]);
         //Create Theme Manager role
         $user = Role::create([
             'code'=> 'THM',
             'name' => 'Theme Manager'
         ]);
-         //Create  (Default) role
+         //Create User (Default) role
          $user = Role::create([
-            'code'=> 'GST',
-            'name' => 'Guest'
+            'code'=> 'USR',
+            'name' => 'User'
         ]);
+        
         
     }
 }

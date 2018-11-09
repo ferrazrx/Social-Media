@@ -15,7 +15,7 @@ use App\Role;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
-    $role = array('ADM', 'THM', 'GST');
+    $role = array('ADM', 'THM', 'USR', 'MOD');
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,

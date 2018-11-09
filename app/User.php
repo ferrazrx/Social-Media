@@ -29,7 +29,19 @@ class User extends Authenticatable
     ];
 
     //Create the relationship user belong to one role
-    public function users(){
-        return $this->belongsTo('App\Role');
+    public function role(){
+        return $this->belongsTo('App\Role', 'role_code', 'code');
+    }
+    public function isAdministrator(){
+
+    }
+    public function isThemeManager(){
+        
+    }
+    public function isModerator(){
+        
+    }
+    public function isUser(){
+        
     }
 }
