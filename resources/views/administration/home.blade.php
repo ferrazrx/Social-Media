@@ -1,13 +1,8 @@
-@extends('layouts.master')
+@extends('administration.master')
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-3">
-            @include('administration.navigation')
-        </div>
-        <div class="col-md-9">
-        </div>
-    </div>
+    <h1 class="mt-3">Welcome!</h1>
+    <hr>
 </div>
 @endsection

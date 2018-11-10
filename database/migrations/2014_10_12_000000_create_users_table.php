@@ -22,7 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('role_code')->references('code')->on('roles')->onDelete('cascade');;
+            $table->softDeletes();
+            $table->foreign('role_code')->references('code')->on('roles')->onDelete('cascade');
         });
     }
 

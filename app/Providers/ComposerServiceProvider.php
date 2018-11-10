@@ -16,7 +16,12 @@ class ComposerServiceProvider extends ServiceProvider
     {
         
         View::composer(
-            'administration.navigation', 'App\Http\ViewComposers\RolesComposer'
+            ['administration.sideMenu',
+             'administration.users.create',
+             'administration.users.edit',
+             'administration.users.show'
+            ], 
+            'App\Http\ViewComposers\RolesComposer'
         );
     }
 
