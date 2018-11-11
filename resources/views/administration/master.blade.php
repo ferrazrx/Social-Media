@@ -23,7 +23,17 @@
     <body>
         @include('layouts.navigation')
         <main>
-            @yield('content')
+            <div class="row d-flex">
+                <div class="col-md-3 bg-secondary">
+                    @include('administration.sideMenu')
+                </div>
+                <div class="col-md-9">
+                    @yield('content')
+                </div>
+            </div>
         </main>
+        <footer>
+            @include('administration.footer')
+        </footer>
     </body>
 </html>

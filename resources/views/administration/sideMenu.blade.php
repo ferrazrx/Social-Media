@@ -1,7 +1,7 @@
-<ul class="nav px-4 py-3 flex-column bg-secondary">
+<ul class="nav px-4 py-3 flex-column">
     <p class="text-white">MAIN MENU</p>
     <li class="nav-item text-white">
-        <a class="nav-link active text-white" href="#">Privileges</a>
+        <a class="nav-link active text-white" href="{{ route('users.index') }}">Privileges</a>
         <ul>
             @foreach ($roles as $role)
                 <li class="nav-item">

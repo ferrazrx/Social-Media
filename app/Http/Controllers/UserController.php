@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Http\Requests\StoreUser;
+use App\Http\Requests\UpdateUser;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -14,9 +18,10 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $role = $request->role? $request->role : 'ADM';
-        $users = User::all()->where('role_code', $role);
-        return view('administration.users', compact('users')); 
+        $this->authorize('view', User::class);
+        $role = $request->role? $request->role : ['ADM','THM','MOD'];
+        $users = User::all()->wherein('role_code', $role);
+        return view('administration.users.index', compact('users')); 
     }
 
     /**
@@ -26,7 +31,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create', User::class);
+        return view('administration.users.create');
     }
 
     /**
@@ -35,9 +41,13 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUser $request)
     {
-        //
+        $this->authorize('create', User::class);
+        $validated = $request->validated();
+        $validated = $validated + ['passwors'=> Hash::make($request->password)];
+        $user = User::create($validated);
+        return redirect()->route('users.show', ['id'=> $user->id])->withSuccess($user->role->name . " created successfully!");;
     }
 
     /**
@@ -46,9 +56,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        $this->authorize('view', $user);
+        return view('administration.users.show', compact('user'));
     }
 
     /**
@@ -57,9 +68,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        $this->authorize('view', $user);
+        return view('administration.users.edit', compact('user'));
     }
 
     /**
@@ -69,9 +81,18 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUser $request, User $user)
     {
-        //
+        $this->authorize('update', $user);
+        $validated = $request->validated();
+        
+        if($request->update === 'password'){
+            $user->update($validated + ['passwors'=> Hash::make($request->password)]);
+            
+        }
+        $user->update($validated);
+        return redirect('/users/'.$user->id)->withSuccess($user->role->name . " updated successfully!");
+        
     }
 
     /**
@@ -80,8 +101,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $this->authorize('update', $user);
+        $role = $user->role;
+        $user->delete();
+        return redirect()->route('users.index', ['role' => $role->code])->withSuccess("$role->name deleted successfully!");
     }
 }
