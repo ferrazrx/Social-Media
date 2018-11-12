@@ -17,8 +17,15 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+// Administration Routes
 //Define resources Routes
+    //Auth Routes
 Auth::routes();
+    //Users Routes
+Route::get('/users/search', 'UserController@search')->name('users.search');
 Route::resource('users', 'UserController');
+    //Themes Routes
+Route::resource('themes', 'ThemeController');
+    //Posts Routes
 Route::resource('posts', 'PostController');
 

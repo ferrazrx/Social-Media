@@ -3,7 +3,6 @@
 namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
-use App\Repositories\UserRepository;
 use App\Role;
 
 class RolesComposer
