@@ -26,7 +26,7 @@ class UserPolicy
      */
     public function view(User $user)
     {
-        return $user->isAdministrator() || $user->isModerator();
+        return $user->isAdministrator() || $user->isThemeManager();
     }
 
     /**
@@ -49,7 +49,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->id === $model->id;
+        return ($user->id === $model->id) && $user->isThemeManager();
     }
 
     /**
@@ -61,7 +61,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->id === $model->id;
+        return ($user->id === $model->id) && $user->isThemeManager();
     }
 
     /**

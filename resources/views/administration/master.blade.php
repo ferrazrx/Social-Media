@@ -17,14 +17,14 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
         <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/all.css') }}" rel="stylesheet">
+        <link href="{{ asset($theme->url) }}" rel="stylesheet">
     </head>
     <body>
-        @include('layouts.navigation')
+        @include('administration.navigation')
         <main>
             <div class="row d-flex">
-                <div class="col-md-3 bg-secondary">
+                <div class="col-md-3 bg-light">
                     @include('administration.sideMenu')
                 </div>
                 <div class="col-md-9">

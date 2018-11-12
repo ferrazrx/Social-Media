@@ -14,15 +14,25 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
+        //View composer to display all roles available
         View::composer(
             ['administration.sideMenu',
              'administration.users.create',
              'administration.users.edit',
-             'administration.users.show'
+             'administration.users.show',
+             'administration.home'
             ], 
             'App\Http\ViewComposers\RolesComposer'
         );
+
+        //View composer to display the theme selected
+        View::composer(
+            ['administration.master',
+             'layouts.master'
+            ], 
+            'App\Http\ViewComposers\ThemeComposer'
+        );
+
     }
 
     /**

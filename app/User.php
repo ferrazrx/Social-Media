@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_code'
+        'name', 'email', 'password', 'role_code', 'deleted_by'
     ];
 
     //Soft delete User models

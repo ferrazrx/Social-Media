@@ -14,9 +14,6 @@ class UserSeeder extends Seeder
     public function run()
     {   
 
-        //Create 30 random users
-        factory(App\User::class, 30)->create();
-
         //Create a Administrator (ADM) user for test purposes
         //Should be deleted in production
         User::create([
@@ -27,6 +24,9 @@ class UserSeeder extends Seeder
             'remember_token' => str_random(10),
             'role_code' => "ADM"
         ]);
+
+        //Create 30 random users
+        factory(App\User::class, 100)->create();
 
         //Create a Theme Manager(THM) user for test purposes
         //Should be deleted in production

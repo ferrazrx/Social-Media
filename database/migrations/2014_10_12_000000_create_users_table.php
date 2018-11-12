@@ -23,7 +23,9 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
+            $table->unsignedInteger('deleted_by')->nullable();
             $table->foreign('role_code')->references('code')->on('roles')->onDelete('cascade');
+            $table->foreign('deleted_by')->references('id')->on('users');
         });
     }
 
