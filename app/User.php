@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_code', 'deleted_by'
+        'name', 'email', 'password', 'role_code', 'deleted_by', 'created_by', 'last_modified_by'
     ];
 
     //Soft delete User models
@@ -49,5 +49,17 @@ class User extends Authenticatable
     }
     public function isUser(){
         return Auth::user()->role->code ==='USR';
+    }
+    public function wasCreatedBy(){
+        return $this->belongsTo('App\User', 'created_by', 'id');
+    }
+    public function users_created(){
+        return $this->hasMany('App\User', 'created_by', 'id');
+    }
+    public function wasUpdatedBy(){
+        return $this->belongsTo('App\User', 'last_modified_by', 'id');
+    }
+    public function users_updated(){
+        return $this->hasMany('App\User', 'last_modified_by', 'id');
     }
 }
