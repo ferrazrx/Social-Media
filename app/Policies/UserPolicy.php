@@ -18,6 +18,18 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can view the home.
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $model
+     * @return mixed
+     */
+    public function home(User $user)
+    {
+        return $user->isAdministrator() || $user->isThemeManager();
+    }
+
+    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
@@ -26,7 +38,7 @@ class UserPolicy
      */
     public function view(User $user)
     {
-        return $user->isAdministrator() || $user->isThemeManager();
+        return $user->isAdministrator();
     }
 
     /**
@@ -49,7 +61,8 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return ($user->id === $model->id) && $user->isThemeManager();
+
+        return $user->isAdministrator();
     }
 
     /**
@@ -61,7 +74,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return ($user->id === $model->id) && $user->isThemeManager();
+        return $user->isAdministrator();
     }
 
     /**

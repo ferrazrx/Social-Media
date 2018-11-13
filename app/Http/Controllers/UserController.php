@@ -47,7 +47,11 @@ class UserController extends Controller
     {
         $this->authorize('create', User::class);
         $validated = $request->validated();
-        $validated = $validated + ['passwors'=> Hash::make($request->password)];
+        $validated['password'] = Hash::make($request->password);
+        $validated = $validated + [
+            'created_by' => Auth::id(),
+            'last_modified_by' => Auth::id(),
+        ];
         $user = User::create($validated);
         return redirect()->route('users.show', ['id'=> $user->id])->withSuccess($user->role->name . " created successfully!");;
     }
@@ -87,6 +91,9 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
         $validated = $request->validated();
+        $validated = $validated + [
+            'last_modified_by' => Auth::id()
+        ];
         
         if($request->update === 'password'){
             $password = Hash::make($request->password);

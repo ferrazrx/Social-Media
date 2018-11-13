@@ -22,11 +22,10 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('admin'), // secret with bcript for testing purposes - password 'admin'
             'remember_token' => str_random(10),
-            'role_code' => "ADM"
+            'role_code' => "ADM",
+            'created_by' => 1,
+            'last_modified_by'=> 1
         ]);
-
-        //Create 30 random users
-        factory(App\User::class, 100)->create();
 
         //Create a Theme Manager(THM) user for test purposes
         //Should be deleted in production
@@ -36,7 +35,9 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('admin'), // secret with bcript for testing purposes - password 'admin'
             'remember_token' => str_random(10),
-            'role_code' => "THM"
+            'role_code' => "THM",
+            'created_by' => 1,
+            'last_modified_by'=> 1
         ]);
         //Create a Moderator(MOD) user for test purposes
         //Should be deleted in production
@@ -46,7 +47,9 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('admin'), // secret with bcript for testing purposes - password 'admin'
             'remember_token' => str_random(10),
-            'role_code' => "MOD"
+            'role_code' => "MOD",
+            'created_by' => 1,
+            'last_modified_by'=> 1
         ]);
 
         //Create a User(USR) user for test purposes
@@ -57,7 +60,9 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('admin'), // secret with bcript for testing purposes - password 'admin'
             'remember_token' => str_random(10),
-            'role_code' => "USR"
+            'role_code' => "USR",
+            'created_by' => 1,
+            'last_modified_by'=> 1
         ]);
     }
 }

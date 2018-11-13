@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $this->authorize('view', User::class);
+        $this->authorize('home', User::class);
         return view('administration.home');
     }
 }

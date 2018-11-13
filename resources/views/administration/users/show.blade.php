@@ -39,6 +39,11 @@
                     </select>
                 </div>
             </div>
+            <hr>
+            <p><small>Created at: {{ $user->created_at }}</small></p>
+            <p><small>Created by: {{ ucfirst($user->wasCreatedBy->name) }}</small></p>
+            <p><small>Last modified at: {{ $user->updated_at }}</small></p>
+            <p><small>Last modified by: {{ ucfirst($user->wasUpdatedBy->name) }}</small></p>
     </div>
 </div>
 @endsection
