@@ -35,20 +35,31 @@ class User extends Authenticatable
     ];
 
     //Create the relationship user belong to one role
-    public function role(){
-        return $this->belongsTo('App\Role', 'role_code', 'code');
+    public function roles(){
+        return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_code')->using('App\UserRole')->as('role');
+    }
+    public function posts(){
+        return $this->hasMany('App\Post');
     }
     public function isAdministrator(){
-        return Auth::user()->role->code === 'ADM';
+        return $role = array_first(Auth::user()->roles, function ($role) {
+            return $role->name === 'Administrator';
+        });
     }
     public function isThemeManager(){
-        return Auth::user()->role->code === 'THM';
+        return array_first(Auth::user()->roles, function ($role) {
+            return $role->code === 'Theme Manager';
+        });
     }
     public function isModerator(){
-        return Auth::user()->role->code === 'MOD';
+        return array_first(Auth::user()->roles, function ($role) {
+            return $role->code === 'Moderator';
+        });
     }
     public function isUser(){
-        return Auth::user()->role->code ==='USR';
+        return array_first(Auth::user()->roles, function ($role) {
+            return $role->code === 'User';
+        });
     }
     public function wasCreatedBy(){
         return $this->belongsTo('App\User', 'created_by', 'id');

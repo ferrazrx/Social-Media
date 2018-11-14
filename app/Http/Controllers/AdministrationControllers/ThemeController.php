@@ -1,13 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AdministrationControllers;
 
 use Illuminate\Http\Request;
 use App\Theme;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class ThemeController extends Controller
 {
+    public function __construct(){
+        //Middleware to check if user is ThemeManager, if not return to home
+        $this->middleware('isThemeManager');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,6 @@ class ThemeController extends Controller
      */
     public function index()
     {
-        $this->authorize('view', Theme::class);
         $themes = Theme::paginate(15);
         return view('administration.themes.index', compact('themes'));
     }
@@ -27,7 +31,7 @@ class ThemeController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Theme::class);
+        return view('administration.themes.create');
     }
 
     /**
@@ -49,7 +53,7 @@ class ThemeController extends Controller
      */
     public function show(Theme $theme)
     {
-        $this->authorize('view', Theme::class);
+
         return view('administration.themes.show', compact('theme'));
     }
 
@@ -61,7 +65,7 @@ class ThemeController extends Controller
      */
     public function edit($id)
     {
-        $this->authorize('view', Theme::class);
+
     }
 
     /**
@@ -73,7 +77,7 @@ class ThemeController extends Controller
      */
     public function update(Request $request, Theme $theme)
     {
-        $this->authorize('update', Theme::class);
+
         Theme::where('is_default', '=', 1)->update(['is_default' => 0]);
         $theme->update(['is_default' => 1, 'last_modified_by' => Auth::id()]);
         return redirect()->route('themes.show', compact('theme'))->withSuccess("Theme $theme->name was set as default");
@@ -87,7 +91,7 @@ class ThemeController extends Controller
      */
     public function destroy(Theme $theme)
     {
-        $this->authorize('delete', Theme::class);
+
         if(!$theme->is_default){
             $theme->update(['deleted_by'=> Auth::id()]);
             $theme->delete();

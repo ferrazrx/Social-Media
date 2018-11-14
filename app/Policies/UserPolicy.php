@@ -13,7 +13,7 @@ class UserPolicy
     public function before($user, $ability)
     {
         if ($user->isAdministrator()) {
-            return true;
+            return true; //Administrator can execute all actions
         }
     }
 
@@ -61,8 +61,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-
-        return $user->isAdministrator();
+        return $user->id === $model->id;
     }
 
     /**
@@ -74,7 +73,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->isAdministrator();
+        return $user->id === $model->id;
     }
 
     /**
@@ -97,6 +96,18 @@ class UserPolicy
      * @return mixed
      */
     public function forceDelete(User $user, User $model)
+    {
+        return $user->isAdministrator();
+    }
+
+    /**
+     * Determine whether the user can change priviledges.
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $model
+     * @return mixed
+     */
+    public function canChangePriviledge(User $user, User $model)
     {
         return $user->isAdministrator();
     }

@@ -18,8 +18,8 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('themes.index') }}">Themes</a>
     </li>
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link disabled" href="#">Disabled</a>
-    </li>
+    </li> --}}
 </ul>
 

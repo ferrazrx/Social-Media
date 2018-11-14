@@ -18,7 +18,7 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/all.css') }}" rel="stylesheet">
-        <link href="{{ asset($theme->url) }}" rel="stylesheet">
+        <link href="{{ asset($theme->local_url) }}" rel="stylesheet">
     </head>
     <body>
         @include('administration.navigation')

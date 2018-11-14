@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
@@ -24,7 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $this->authorize('home', User::class);
-        return view('administration.home');
+        return view('home');
     }
 }

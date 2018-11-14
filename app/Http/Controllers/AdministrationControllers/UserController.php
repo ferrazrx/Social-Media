@@ -1,17 +1,36 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AdministrationControllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
+use App\UserRole;
 use App\Http\Requests\StoreUser;
 use App\Http\Requests\UpdateUser;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+
 
 class UserController extends Controller
 {
+
+    public function __construct(){
+        //Middleware to check if user is Administrator, if not return to home
+        $this->middleware('isAdmin')->except('home');
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function home()
+    {
+        $this->authorize('home', User::class);
+        return view('administration.home');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,10 +38,14 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('view', User::class);
-        $role = Role::where('code', $request->role)->first();
-        $users = User::whereIn('role_code', $request->role ? [$request->role] : ['ADM','THM','MOD'])->paginate(10);
-        
+        //$role = Role::where('code', $request->role)->first()->code;
+
+        if($request->role){
+            $users = Role::where('code', $request->role)->first()->users()->paginate(10) ;
+        }else{
+            $users = User::paginate(10);
+        }
+       
         return view('administration.users.index', compact('users', 'role')); 
     }
 
@@ -33,7 +56,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', User::class);
         return view('administration.users.create');
     }
 
@@ -45,9 +67,7 @@ class UserController extends Controller
      */
     public function store(StoreUser $request)
     {
-        $this->authorize('create', User::class);
         $validated = $request->validated();
-        $validated['password'] = Hash::make($request->password);
         $validated = $validated + [
             'created_by' => Auth::id(),
             'last_modified_by' => Auth::id(),
@@ -64,7 +84,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->authorize('view', $user);
         return view('administration.users.show', compact('user'));
     }
 
@@ -76,7 +95,6 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $this->authorize('view', $user);
         return view('administration.users.edit', compact('user'));
     }
 
@@ -89,7 +107,6 @@ class UserController extends Controller
      */
     public function update(UpdateUser $request, User $user)
     {
-        $this->authorize('update', $user);
         $validated = $request->validated();
         $validated = $validated + [
             'last_modified_by' => Auth::id()
@@ -99,9 +116,12 @@ class UserController extends Controller
             $password = Hash::make($request->password);
             $user->update(compact('password'));
         }else{
+            if($user->role_code != $validated['role_code']){
+                $this->authorize('canChangePriviledge', User::class); 
+            }
             $user->update($validated);
         }
-        return redirect('/users/'.$user->id)->withSuccess($user->role->name . " updated successfully!");
+        return redirect()->route('users.show', ['id'=>$user->id])->withSuccess($user->role->name . " updated successfully!");
     }
 
     /**
@@ -112,7 +132,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->authorize('update', $user);
         $role = $user->role;
         $user->update(['deleted_by'=> Auth::id()]);
         $user->delete();
@@ -121,7 +140,7 @@ class UserController extends Controller
     public function search(Request $request){
         $term = $request->term;
         $users = User::where('name','LIKE','%'.$term.'%')->orWhere('email','LIKE','%'.$term.'%')->paginate(10);
-        $users->withPath('/users/search');
+        $users->withPath('/admin/users/search');
         return view('administration.users.index', compact('users','term'));   
     }
 }
