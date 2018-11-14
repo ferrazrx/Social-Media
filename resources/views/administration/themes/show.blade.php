@@ -27,7 +27,8 @@
                 <p>{{ $theme->description }}</p>
             </div>
             <hr>
-            <p><small>URL: {{ $theme->url }}</small></p>
+            <p><small>Local URL: {{ $theme->local_url }}</small></p>
+            <p><small>CDN URL: {{ $theme->cdn_url }}</small></p>
             <p><small>Last Modify By: {{ ucfirst($theme->getLastModifier()->name) }}</small></p>
             <p><small>Created By: {{ ucfirst($theme->getCreator()->name) }}</small></p>
             <hr>

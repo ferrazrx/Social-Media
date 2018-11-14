@@ -11,21 +11,25 @@
 |
 */
 
+//Front-end Routes *** Editable for Front-End ***
 Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-// Administration Routes
-//Define resources Routes
-    //Auth Routes
+//Auth Routes *** DON'T DELETE ****
 Auth::routes();
-    //Users Routes
-Route::get('/users/search', 'UserController@search')->name('users.search');
-Route::resource('users', 'UserController');
-    //Themes Routes
-Route::resource('themes', 'ThemeController');
-    //Posts Routes
-Route::resource('posts', 'PostController');
 
+// Administration Routes
+//Set prefix for administration area
+Route::prefix('admin')->group(function () {
+    Route::get('/', 'AdministrationControllers\UserController@home');
+    //Users Routes
+    Route::get('/users/search', 'AdministrationControllers\UserController@search')->name('users.search');
+    Route::resource('users', 'AdministrationControllers\UserController');
+    //Themes Routes
+    Route::resource('themes', 'AdministrationControllers\ThemeController');
+    //Posts Routes
+    Route::resource('posts', 'AdministrationControllers\PostController');
+});

@@ -43,7 +43,9 @@
             <div class="row">
                 <div class="col-10">
                     <span>{{ $user->name }}</span>
-                    <span class="badge badge-secondary mx-2"><small>{{ $user->role->name }}</small></span>
+                    @foreach ($user->roles as $role)
+                    <span class="badge badge-secondary mx-2"><small>{{ $role->name }}</small></span>
+                    @endforeach
                 </div>
                 @can('update', $user)
                 <div class="col-2">

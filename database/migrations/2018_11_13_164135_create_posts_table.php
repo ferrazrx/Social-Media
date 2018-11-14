@@ -19,12 +19,12 @@ class CreatePostsTable extends Migration
             $table->text('content');
             $table->string('url');
             $table->unsignedInteger('last_modified_by');
-            $table->unsignedInteger('created_by');
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('deleted_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('last_modified_by')->references('id')->on('users');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
         });
     }
